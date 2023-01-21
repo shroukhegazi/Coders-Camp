@@ -57,9 +57,13 @@ class PostDetailAPIView(APIView):
         if post is None:
             return Response({'error': 'Post not found'}, status = status.HTTP_404_NOT_FOUND)
         if post.user.id == request.user.id:
-                post.delete()
-                return Response({"msg":"Post has been deleted!"}, status = status.HTTP_200_OK)
+            # like = Like.objects.filter(post=self.kwargs["pk"])
+            # if like:
+            #     like.delete()
+            post.delete()
+            return Response({"msg":"Post has been deleted!"}, status = status.HTTP_200_OK)
         return Response({"error": "You are not authorized to delete this post"}, status = status.HTTP_401_UNAUTHORIZED)
+  
 
 class UserPostAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -94,13 +98,19 @@ class CommentAPIView(APIView):
                 return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class CommentDetailAPIView(APIView):
+    def get(self, requset, pk,pk2 ,*args, **kwargs):
+        comment= get_comment(self,pk2)
+        if comment is None:
+            return Response({'error': 'comment not found'}, status = status.HTTP_404_NOT_FOUND)
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+
     def delete(self, request,pk,pk2, *args, **kwargs):  
         post = get_post(self,pk) 
         comment=get_comment(self, pk2)
         if post is None:
             return Response({'error': 'Post not found'}, status = status.HTTP_404_NOT_FOUND)
-        if comment is None:
-            return Response({'error': 'comment not found'}, status = status.HTTP_404_NOT_FOUND)    
+  
         if comment.user.id == request.user.id:
             comment.delete()
             return Response({"msg":"Comment has been deleted!"}, status = status.HTTP_200_OK)
@@ -108,20 +118,27 @@ class CommentDetailAPIView(APIView):
 
 class LikeAPIView(APIView):
         permission_classes = [permissions.IsAuthenticated]
-        def get(self, request, pk, *args, **kwargs):
+        def post(self, request, pk, *args, **kwargs):
                 post = get_post(self, pk)
                 if post is None:
                     return Response({'error': 'Post not found'}, status = status.HTTP_404_NOT_FOUND)
-                user_id = request.user.id
-                if (post.user_id):
-                    if post.likes_count >0:
-                        post.likes_count-=1
+
+                like = Like.objects.filter(post=post.id, user=request.user).first()
+                if like:
+                    like.delete()
+                    post.likes_count -=1
+                    post.save()
+                    return Response({"Error": "You unliked this post"}, status=status.HTTP_200_OK)
+
                 else:
-                    post.likes_count += 1
-                    serializer = LikeSerializer(data=request.data)
-                    if serializer.is_valid():
-                        serializer.save(user=request.user, post=request.post)
-                        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-                post.save()
-                serializer = PostSerializer(post)
-                return Response(serializer.data, status = status.HTTP_200_OK)
+                    like= Like.objects.create(user= request.user, post= post )
+                    like.save()
+                    post.likes_count +=1
+                    post.save()
+                    return Response({"status": "You liked this post"}, status=status.HTTP_200_OK)
+
+                   
+   
+                
+
+             

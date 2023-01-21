@@ -10,3 +10,7 @@ def get_comment(self, pk):
             return Comment.objects.get(pk = pk)
         except Comment.DoesNotExist:
             return None
+
+
+def number_of_likes(self):
+    return self.likes.count()

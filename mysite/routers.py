@@ -9,8 +9,8 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-# router.register("", PostViews, basename="postviews")
-# app_name = "mysite"
 
+
+    
 
 urlpatterns = router.urls

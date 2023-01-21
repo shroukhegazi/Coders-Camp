@@ -8,7 +8,7 @@ urlpatterns = [
     path('post/', PostListAPIView.as_view()),
     path('post/<int:pk>/', PostDetailAPIView.as_view()),
     path('<username>/posts/', UserPostAPIView.as_view()),
-    #likes endpoints
+    #like, unlike endpoints
     path('<int:pk>/like/', LikeAPIView.as_view()),
     #comments endpoints
     path('<int:pk>/comment/', CommentAPIView.as_view()),

@@ -20,8 +20,9 @@ class Post(models.Model):
         return self.title
 
 class Like (models.Model):
-    user=models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True),
-    post=models.ForeignKey(Post, verbose_name=("Post"), on_delete=models.SET_NULL, null=True)
+    user=models.ForeignKey(CustomUser,  related_name = 'likes',on_delete=models.SET_NULL, null=True)
+    post=models.ForeignKey(Post,  related_name = 'likes', on_delete=models.SET_NULL, null=True)
+
 
 class Comment(models.Model):
     comment= models.CharField(max_length=1000, null=False)
