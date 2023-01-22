@@ -9,4 +9,5 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
     
+    
 urlpatterns = router.urls
