@@ -8,9 +8,6 @@ if settings.DEBUG:
     router = DefaultRouter()
 else:
     router = SimpleRouter()
-
-
-
     
 
 urlpatterns = router.urls
