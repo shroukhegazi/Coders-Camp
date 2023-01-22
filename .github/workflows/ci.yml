@@ -7,15 +7,16 @@ name: CodersCamp
     branches:
       - master
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Code Repository
-      uses: actions/checkout@v3
-    - name: Build the Stack
-      run: docker-compose -f local.yml build
-    - name: Run DB Migrations
-      run: docker-compose -f local.yml run --rm django python manage.py migrate
-    - name: Run Django Tests
-      run: docker-compose exec web python3 manage.py test
-    - name: Tear down the Stack
-      run: docker-compose -f local.yml down
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+      - name: Build the Stack
+        run: docker-compose -f local.yml build
+      - name: Run DB Migrations
+        run: docker-compose -f local.yml run --rm django python manage.py migrate
+      - name: Run Django Tests
+        run: docker-compose exec web python3 manage.py test
+      - name: Tear down the Stack
+        run: docker-compose -f local.yml down
