@@ -1,7 +1,7 @@
 from django.urls import reverse 
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
-from mysite.models import Post, CustomUser, Comment
+from mysite.models import Post, CustomUser, Comment, Like
 
 class TestPostViews(APITestCase):
 #Creating Post Tests
@@ -222,3 +222,48 @@ class TestCommentViews(APITestCase):
         post.save()
         response = client.delete("/"+str(post.pk)+"/comment/70/")
         assert response.status_code == 404
+
+
+class TestLikeViews(APITestCase):
+    def test_like_by_unauthenticated_user(self):
+        client = APIClient()
+        user=CustomUser.objects.create_user("testing1", "134679//t")
+
+        post= Post(title="CodeCamp",url="https://www.django-rest-framework.org/", user=user)
+        post.save() 
+        response = client.post("/"+str(post.pk)+"/like/",{})
+        assert response.status_code == 401
+
+    def test_like_post(self):
+        client = APIClient()
+        user=CustomUser.objects.create_user("testing1", "134679//t")
+        client.force_authenticate(user=user)    
+
+        post= Post(title="CodeCamp",url="https://www.django-rest-framework.org/", user=user)
+        post.save() 
+        response = client.post("/"+str(post.pk)+"/like/",{})
+        post = Post.objects.get(id=post.pk)
+        assert response.status_code == 200
+        assert post.likes_count ==1
+
+    def test_unlike_post(self):
+        client = APIClient()
+        user=CustomUser.objects.create_user("testing1", "134679//t")
+        client.force_authenticate(user=user)    
+
+        post= Post(title="CodeCamp",url="https://www.django-rest-framework.org/", user=user, likes_count=1)
+        post.save() 
+        like= Like(user=user, post=post)
+        like.save()
+        response = client.post("/"+str(post.pk)+"/like/",{})
+        post = Post.objects.get(id=post.pk)
+        assert response.status_code == 200
+        assert post.likes_count ==0   
+
+    def test_like_unexist_post(self):
+        client = APIClient()
+        user=CustomUser.objects.create_user("testing1", "134679//t")
+        client.force_authenticate(user=user)    
+        response = client.post("/90/like/",{})
+        assert response.status_code == 404
+
