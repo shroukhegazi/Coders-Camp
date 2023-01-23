@@ -1,0 +1,22 @@
+name: CodersCamp
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+      - name: Build the Stack
+        run: docker-compose -f docker-compose.yml build
+      - name: Run DB Migrations
+        run: docker-compose -f docker-compose.yml run --rm web python3 manage.py migrate
+      - name: Run Django Tests
+        run: docker-compose -f docker-compose.yml run --rm web python3 manage.py test
+      - name: Tear down the Stack
+        run: docker-compose -f docker-compose.yml down
