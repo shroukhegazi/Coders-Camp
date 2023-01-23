@@ -15,7 +15,7 @@ jobs:
       - name: Build the Stack
         run: docker-compose -f docker-compose.yml build
       - name: Run DB Migrations
-        run: docker-compose -f docker-compose.yml run --rm django python manage.py migrate
+        run: docker-compose -f docker-compose.yml run --rm web python3 manage.py migrate
       - name: Run Django Tests
         run: docker-compose exec web python3 manage.py test
       - name: Tear down the Stack
