@@ -1,0 +1,22 @@
+apiVersion: coderscamp/v1
+kind: Deployment
+metadata:
+  name: django-app
+  labels:
+    app: coderscamp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: coderscamp
+  template:
+    metadata:
+      labels:
+        app: coderscamp
+    spec:
+      containers:
+        - image: 'shroukhegazi/coderscamp:latest'
+          name: coderscamp
+          ports:
+            - containerPort: 8000
+              name: gunicorn
