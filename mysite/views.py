@@ -56,10 +56,6 @@ class PostDetailAPIView(APIView):
         if post is None:
             return Response({'error': 'Post not found'}, status = status.HTTP_404_NOT_FOUND)
         if post.user.id == request.user.id:
-            lenth = len(Like.objects.filter(post=self.kwargs["pk"]))
-            while lenth:
-                Like.objects.filter(post=self.kwargs["pk"]).delete()
-                lenth-=1
             post.delete()
             return Response({"msg":"Post has been deleted!"}, status = status.HTTP_200_OK)
         return Response({"error": "You are not authorized to delete this post"}, status = status.HTTP_401_UNAUTHORIZED)

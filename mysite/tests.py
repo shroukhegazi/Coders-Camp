@@ -136,7 +136,7 @@ class TestPostViews(APITestCase):
         response = client.delete("/post/"+str(post.pk)+"/")
         assert response.status_code == 200
         likes = Like.objects.filter(post=pk)
-        #check that likes of the deleted post is also deleted 
+        #check that likes of the deleted post
         self.assertIsNone(None, likes)
 
 

@@ -1,4 +1,4 @@
-from .models import Post, Comment
+from .models import Post, Comment, CustomUser
 def get_post(self, pk):
         try:
             return Post.objects.get(pk = pk)
@@ -14,3 +14,8 @@ def get_comment(self, pk):
 
 def number_of_likes(self):
     return self.likes.count()
+
+
+def user(self):
+    user=CustomUser.objects.create_user("testing1", "134679//t")
+
