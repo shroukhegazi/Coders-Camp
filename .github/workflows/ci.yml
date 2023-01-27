@@ -20,3 +20,21 @@ jobs:
         run: docker-compose -f docker-compose.yml run --rm web python3 manage.py test
       - name: Tear down the Stack
         run: docker-compose -f docker-compose.yml down
+        
+        
+  build_push_image_to_DockerHub:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+    - name: Build the Docker image
+      run: docker-compose build --tag coderscamp:$(date +%s)
+      
+    - name: Docker Push
+      run: docker push shroukhegazi/coderscamp
