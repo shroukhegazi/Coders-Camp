@@ -36,6 +36,6 @@ jobs:
     - name: Build the Docker image
       run: docker-compose build -t coderscommunity_web
     - name: tag Docker image
-      run: docker tag coderscommunity_web:latest shroukhegazi/coderscamp:latest
+      run: docker tag coderscommunity_web shroukhegazi/coderscamp:latest
     - name: Docker Push
       run: docker push shroukhegazi/coderscamp:latest
