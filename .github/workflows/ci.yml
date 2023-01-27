@@ -34,7 +34,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: Build the Docker image
-      run: docker-compose -f docker-compose.yaml build 
+      run: docker-compose -f docker-compose.yml build coderscamp
     - name: tag Docker image
       run: docker tag shroukhegazi/coderscamp:$(date +%s)
     - name: Docker Push
