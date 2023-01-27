@@ -36,6 +36,6 @@ jobs:
     - name: Build the Docker image
       run: docker-compose build -t coderscamp
     - name: tag Docker image
-      run: docker tag coderscamp shroukhegazi/coderscamp:$(date +%s)
+      run: docker tag coderscamp:latest shroukhegazi/coderscamp:$(date +%s)
     - name: Docker Push
       run: docker push shroukhegazi/coderscamp:$(date +%s)
