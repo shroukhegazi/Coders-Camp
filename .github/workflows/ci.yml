@@ -38,6 +38,6 @@ jobs:
     - name: print
       run: docker images    
     - name: tag Docker image
-      run: docker tag coderscommunity_web:latest shroukhegazi/coderscamp:latest
+      run: docker tag coders-camp_web:latest shroukhegazi/coderscamp:latest$(date +%s)
     - name: Docker Push
-      run: docker push shroukhegazi/coderscamp:latest
+      run: docker push shroukhegazi/coderscamp:latest$(date +%s)
