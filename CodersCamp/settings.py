@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mysite",
     "rest_framework",
+    'rest_framework_swagger',
     "djoser",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
@@ -122,22 +123,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 SIMPLE_JWT={
     'AUTH_HEADER_TYPES':('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(days=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
-
-# DJOSER = {
-#     "USER_ID_FIELD": "username",
-#     "LOGIN_FIELD": "email",
-#     "SEND_ACTIVATION_EMAIL": True,
-#     "ACTIVATION_URL": "activate/{uid}/{token}",
-#     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-#     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-#     'ACTIVATION_URL': '#/activate/{uid}/{token}',
-#     'SERIALIZERS': {'username_reset': 'djoser.serializers.SendEmailResetSerializer',
-#                     'password_reset': 'djoser.serializers.SendEmailResetSerializer',}
-# }
+SWAGGER_SETTINGS = {
+'LOGIN_URL': 'rest_framework:login',
+'LOGOUT_URL': 'rest_framework:logout',
+    'SECURITY_DEFINITIONS': {
+        'oauth2': {
+            'type': 'JWT',
+            'description': 'Personal API Key authorization',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    }
+}

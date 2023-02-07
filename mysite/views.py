@@ -94,6 +94,8 @@ class CommentAPIView(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class CommentDetailAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, requset, pk,pk2 ,*args, **kwargs):
         comment= get_comment(self,pk2)
         if comment is None:
