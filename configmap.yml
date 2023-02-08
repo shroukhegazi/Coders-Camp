@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: coderscamp
-data:
-  DJANGO_ALLOWED_HOSTS: "*"
-  STATIC_BUCKET_NAME: "coderscamp"
-  DJANGO_LOGLEVEL: "info"
-  DEBUG: "True"
